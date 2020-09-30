@@ -45,23 +45,20 @@ module.exports = {
             }).then(newuser => {
                 res.status(200).json({ newuser, message: 'New user added' })
             }).catch(error => {
-                if (error.nativeError.code == 'ER_DUP_ENTRY') res.status(400).json({ message: 'User already exist' })
-                res.status(400).json({ message: 'Signup error' })
+                if (error.nativeError.code == 'ER_DUP_ENTRY') {
+                    res.status(400).json({ message: 'User already exists' })
+                } else {
+                    res.status(400).json({ message: 'Signup error' })
+                }
             })
     },
 
     signOut: async (req, res) => {
-        if (!req.user) {
-            res.status(400).json({ message: 'Token not found' })
-        } else {
-            const token = await jwt.sign({ id: req.user.id, role: req.user.role }, process.env.JWT_SECRET, { expiresIn: 0 })
-            if (token) {
-                res.cookie('token', token, {
-                    secure: false,
-                    httpOnly: true,
-                }).json({ message: 'User deauthenticated', token: token })
-            }
+        try {
+            res.clearCookie('token')
+            res.status(200).json({ message: 'Token destroyed' })
+        } catch (error) {
+            res.status(400).json({ message: 'Signout error' })
         }
-
     }
 }
