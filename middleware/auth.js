@@ -5,13 +5,17 @@ module.exports = {
         const token = req.cookies.token || ''
         try {
             if (!token) {
-                return res.status(401).json({ message: 'You need to login first' })
+                return res.status(401).json({ message: 'You need to signin' })
             }
             var decoded = await jwt.verify(token, process.env.JWT_SECRET)
             req.user = decoded
             next()
         } catch (error) {
-            res.status(401).json({ message: error.message })
+            if (error.name == 'TokenExpiredError') {
+                res.status(401).json({ message: 'Token expired, please signin' })
+            } else {
+                res.status(401).json({ message: 'Authentication error' })
+            }
         }
     },
 
