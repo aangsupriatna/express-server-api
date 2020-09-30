@@ -1,7 +1,8 @@
 const router = require('express').Router()
 const user = require('../controller/UserController')
+const auth = require('../middleware/auth')
 
-router.get('/users', user.getUsers)
-router.post('/user', user.postUser)
+router.get('/', auth.isAuthorized, user.getUsers)
+router.post('/', user.postUser)
 
 module.exports = router

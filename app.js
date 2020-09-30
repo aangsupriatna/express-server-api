@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const helmet = require("helmet")
 const routes = require('./routes')
 
@@ -10,6 +11,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 app.use(bodyParser.json())
+app.use(cookieParser())
 app.use(helmet())
 
 //routes

@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-module.exports = {
+const connections = {
     client: 'mysql',
     connection: {
         host: process.env.DB_HOST,
@@ -19,3 +19,5 @@ module.exports = {
         directory: 'seeds'
     }
 };
+
+module.exports = connections
