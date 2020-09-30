@@ -9,6 +9,15 @@ class UserModel extends Model {
     static get tableName() {
         return 'users'
     }
+
+    $beforeInsert() {
+        this.password = bcrypt.hashSync(this.password, 10)
+    }
+
+    $beforeUpdate() {
+        this.password = bcrypt.hashSync(this.password, 10)
+        this.update_at = moment().format()
+    }
 }
 
 module.exports = UserModel

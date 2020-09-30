@@ -11,18 +11,22 @@ module.exports = {
             req.user = decoded
             next()
         } catch (error) {
-            res.status(401).json({
-                message: 'Token is invalid'
-            })
+            res.status(401).json({ message: error.message })
         }
     },
 
     isAuthorized: (req, res, next) => {
         try {
-            if (req.user.role == 'admin') next()
+            if (req.user.role == 'admin') {
+                next()
+            } else {
+                res.status(401).json({
+                    message: 'User not authorized'
+                })
+            }
         } catch (error) {
             res.status(401).json({
-                message: 'User not Authorized'
+                message: 'User not authorized'
             })
         }
     }
