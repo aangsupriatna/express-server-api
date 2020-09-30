@@ -15,8 +15,10 @@ class UserModel extends Model {
     }
 
     $beforeUpdate() {
-        this.password = bcrypt.hashSync(this.password, 10)
-        this.update_at = moment().format()
+        if (this.password) {
+            this.password = bcrypt.hashSync(this.password, 10)
+        }
+        this.updated_at = moment().format()
     }
 }
 
