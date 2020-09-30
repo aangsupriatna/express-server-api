@@ -20,15 +20,9 @@ module.exports = {
     },
 
     isAuthorized: (req, res, next) => {
-        try {
-            if (req.user.role == 'admin') {
-                next()
-            } else {
-                res.status(401).json({
-                    message: 'User not authorized'
-                })
-            }
-        } catch (error) {
+        if (req.user.role == 'admin') {
+            next()
+        } else {
             res.status(401).json({
                 message: 'User not authorized'
             })
